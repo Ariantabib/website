@@ -552,6 +552,7 @@
             const [selectedProject, setSelectedProject] = useState(null);
             const [menuOpen, setMenuOpen] = useState(false);
             const [modalImageIndex, setModalImageIndex] = useState(0);
+            const [isImageLoading, setIsImageLoading] = useState(false); // New state for loading
             
             const cursorDotRef = useRef(null);
             const cursorOutlineRef = useRef(null);
@@ -612,6 +613,7 @@
                 if (selectedProject) {
                     const totalMedia = selectedProject.gallery.length + (selectedProject.video ? 1 : 0);
                     setModalImageIndex((prev) => (prev + 1) % totalMedia);
+                    setIsImageLoading(true); // Set loading on change
                 }
             };
 
@@ -620,12 +622,18 @@
                 if (selectedProject) {
                     const totalMedia = selectedProject.gallery.length + (selectedProject.video ? 1 : 0);
                     setModalImageIndex((prev) => (prev - 1 + totalMedia) % totalMedia);
+                    setIsImageLoading(true); // Set loading on change
                 }
             };
 
             const openProject = (project) => {
                 setSelectedProject(project);
                 setModalImageIndex(0);
+                setIsImageLoading(true); // Set loading on open
+            };
+
+            const handleImageLoad = () => {
+                setIsImageLoading(false);
             };
 
             const handleBackdropClick = (e) => {
@@ -872,13 +880,14 @@
                     {/* --- MODAL --- */}
                     {selectedProject && (
                         <div 
-                            className="fixed inset-0 z-50 flex items-center justify-center p-0 md:p-8 bg-black/95 backdrop-blur-sm animate-fade-in"
+                            className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8 bg-black/95 backdrop-blur-sm animate-fade-in"
                             onClick={handleBackdropClick}
                         >
-                            <div className="relative w-full h-full md:max-w-7xl md:h-[90vh] overflow-hidden bg-bg border border-white/10 flex flex-col md:flex-row shadow-2xl">
+                            {/* Modal Content Container - Now adapts to content size */}
+                            <div className="relative bg-bg border border-white/10 shadow-2xl overflow-hidden flex flex-col md:flex-row max-h-full max-w-full transition-all duration-300 ease-in-out">
                                 
                                 <button 
-                                    className="absolute top-4 right-4 z-30 text-white hover:text-accent p-2 rounded-full backdrop-blur-md"
+                                    className="absolute top-4 right-4 z-30 text-white hover:text-accent p-2 rounded-full backdrop-blur-md bg-black/50"
                                     onClick={() => setSelectedProject(null)}
                                     onMouseEnter={() => handleHover(true)} onMouseLeave={() => handleHover(false)}
                                 >
@@ -886,18 +895,33 @@
                                 </button>
 
                                 {/* Media Section (Adaptive) */}
-                                <div className="w-full md:w-3/4 h-1/2 md:h-full relative group flex items-center justify-center overflow-hidden bg-transparent">
+                                <div className="relative group flex-shrink-0 bg-black flex items-center justify-center min-h-[200px]">
+                                    
+                                    {isImageLoading && (
+                                        <div className="absolute inset-0 flex items-center justify-center z-10">
+                                            {/* Simple CSS Spinner */}
+                                            <div className="w-10 h-10 border-4 border-accent border-t-transparent rounded-full animate-spin"></div>
+                                        </div>
+                                    )}
+
                                     {selectedProject.video && modalImageIndex === selectedProject.gallery.length ? (
                                         <video 
                                             src={selectedProject.video} 
                                             controls 
                                             autoPlay 
-                                            className="w-full h-full object-contain"
+                                            // Video also needs to be constrained
+                                            className="max-w-[calc(100vw-32px)] md:max-w-[calc(100vw-384px)] max-h-[calc(100vh-64px)] w-auto h-auto object-contain"
+                                            onLoadedData={handleImageLoad}
                                         ></video>
                                     ) : (
                                         <img 
                                             src={selectedProject.gallery[modalImageIndex]} 
-                                            className="w-full h-full object-contain transition-opacity duration-300" 
+                                            onLoad={handleImageLoad}
+                                            // CSS constraints to ensure it fits viewport but keeps aspect ratio
+                                            // Mobile max-w: 100vw - 32px padding
+                                            // Desktop max-w: 100vw - 64px padding - 320px sidebar = 100vw - 384px
+                                            // Max-h: 100vh - 64px padding
+                                            className={`max-w-[calc(100vw-32px)] md:max-w-[calc(100vw-384px)] max-h-[calc(100vh-64px)] w-auto h-auto object-contain transition-opacity duration-300 ${isImageLoading ? 'opacity-0' : 'opacity-100'}`}
                                             alt="Project Detail" 
                                         />
                                     )}
@@ -919,7 +943,7 @@
                                                 <Icons.ArrowRight />
                                             </button>
                                             
-                                            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+                                            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20">
                                                 {selectedProject.gallery.map((_, idx) => (
                                                     <div 
                                                         key={idx} 
@@ -937,7 +961,11 @@
                                 </div>
 
                                 {/* Info Section */}
-                                <div className={`w-full md:w-1/4 p-8 md:p-10 flex flex-col bg-surface border-l border-white/10 overflow-y-auto ${isRTL ? 'text-right font-fa' : 'text-left'}`} dir={isRTL ? 'rtl' : 'ltr'}>
+                                <div 
+                                    className={`w-full md:w-[320px] p-6 flex flex-col bg-surface border-l border-white/10 overflow-y-auto ${isRTL ? 'text-right font-fa border-r border-l-0' : 'text-left'}`} 
+                                    dir={isRTL ? 'rtl' : 'ltr'}
+                                    style={{ flexShrink: 0 }} // Prevent shrinking
+                                >
                                     <span className="text-accent text-xs uppercase tracking-widest mb-2">{selectedProject.loc}</span>
                                     <h2 className="text-2xl md:text-3xl font-bold mb-6 text-white">{selectedProject.title[lang]}</h2>
                                     <p className="text-secondary leading-loose text-sm mb-auto">
