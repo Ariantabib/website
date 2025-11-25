@@ -176,7 +176,9 @@
                     title: "The Architect",
                     bio: "I am an architectural designer operating at the intersection of built environments and digital artistry. With a high-honors academic background and a diverse portfolio of executive projects, my work bridges the gap between conceptual innovation and technical precision. From designing large-scale healthcare facilities to crafting bespoke luxury interiors and leading global 3D visualization campaigns, I am dedicated to creating spaces and images that tell a compelling story.",
                     stat1: "Years Experience",
-                    stat2: "Global Clients"
+                    stat2: "Global Clients",
+                    expTitle: "Work Experience",
+                    eduTitle: "Education"
                 },
                 footer: "© 2025 Arian Tabib. All Rights Reserved."
             },
@@ -199,9 +201,41 @@
                     title: "درباره من",
                     bio: "من طراح معماری هستم که در نقطه تلاقی محیط‌های ساخته‌شده و هنر دیجیتال فعالیت می‌کنم. با پیش‌زمینه‌ای آکادمیک و ممتاز و پورتفولیویی متنوع از پروژه‌های اجرایی، کار من پلی است میان نوآوری مفهومی و دقت فنی. از طراحی مراکز درمانی بزرگ‌مقیاس تا خلق فضاهای داخلی لوکس و سفارشی، و رهبری کمپین‌های جهانی تجسم سه‌بعدی، هدف من خلق فضاها و تصاویری است که داستانی گیرا را روایت می‌کنند.",
                     stat1: "سال تجربه",
-                    stat2: "مشتری جهانی"
+                    stat2: "مشتری جهانی",
+                    expTitle: "سوابق کاری",
+                    eduTitle: "تحصیلات"
                 },
                 footer: "© ۱۴۰۳ آرین طبیب. تمامی حقوق محفوظ است."
+            }
+        };
+
+        // TIMELINE DATA
+        const timelineData = {
+            en: {
+                experience: [
+                    { role: "Visual Strategy & Advertising Design", company: "Mix Plus", duration: "1+ Year" },
+                    { role: "Executive Interior & Architectural Design", company: "Freelance", duration: "1.5 Years" },
+                    { role: "Senior 3D Artist & Project Modeler", company: "NFINITE, France (Remote)", duration: "2 Years" },
+                    { role: "Interior Designer", company: "Farnoush Forootani Architecture Group", duration: "1 Year" },
+                    { role: "3D Modeler & Physical Model Maker", company: "Square Architect Firm", duration: "1 Year" }
+                ],
+                education: [
+                    { role: "Master of Architecture", company: "Azad University, North Tehran Branch", duration: "In Progress" },
+                    { role: "Bachelor of Architecture", company: "Azad University, North Tehran Branch", duration: "GPA: 17/20" }
+                ]
+            },
+            fa: {
+                experience: [
+                    { role: "استراتژی بصری و طراحی تبلیغات", company: "میکس پلاس", duration: "۱+ سال" },
+                    { role: "طراحی اجرایی معماری و داخلی", company: "فریلنس", duration: "۱.۵ سال" },
+                    { role: "هنرمند ارشد سه‌بعدی و مدل‌ساز", company: "NFINITE فرانسه (ریموت)", duration: "۲ سال" },
+                    { role: "طراح داخلی", company: "گروه معماری فرنوش فروتنی", duration: "۱ سال" },
+                    { role: "مدل‌ساز سه‌بعدی و ماکت‌ساز", company: "شرکت معماری مربع", duration: "۱ سال" }
+                ],
+                education: [
+                    { role: "کارشناسی ارشد معماری", company: "دانشگاه آزاد تهران شمال", duration: "در حال تحصیل" },
+                    { role: "کارشناسی معماری", company: "دانشگاه آزاد تهران شمال", duration: "معدل: ۱۷/۲۰" }
+                ]
             }
         };
 
@@ -524,6 +558,7 @@
             const cursorOutlineRef = useRef(null);
 
             const t = content[lang];
+            const timeline = timelineData[lang];
             const isRTL = lang === 'fa';
 
             // --- Logic ---
@@ -751,17 +786,17 @@
                                 {t.contact.title}
                             </h2>
                             
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" dir="ltr">
                                 {socialLinks.map((item, index) => (
                                     <a 
                                         key={index} 
                                         href={item.href} 
                                         target="_blank"
-                                        className="flex items-center gap-4 p-6 rounded-lg border border-white/5 hover:border-accent/50 hover:bg-white/5 transition-all group cursor-none"
+                                        className="flex items-center gap-4 p-6 rounded-lg border border-white/5 hover:border-accent/50 hover:bg-white/5 transition-all group cursor-none text-left"
                                         onMouseEnter={() => handleHover(true)} onMouseLeave={() => handleHover(false)}
                                     >
                                         <span className="text-secondary group-hover:text-accent transition-colors scale-110">{item.icon}</span>
-                                        <div className={`flex flex-col ${isRTL ? 'text-right items-end' : 'text-left'}`}>
+                                        <div className="flex flex-col items-start">
                                             <span className="text-[10px] uppercase tracking-widest text-secondary">{item.label}</span>
                                             <span className="text-sm font-medium text-white">{item.text}</span>
                                         </div>
@@ -774,18 +809,49 @@
                     {/* --- ABOUT ME --- */}
                     <section id="about" className="py-24 px-6 bg-[#080808] border-t border-white/5">
                         <div className="container mx-auto max-w-6xl">
-                            <div className={`flex flex-col md:flex-row items-center gap-12 md:gap-20 ${isRTL ? 'md:flex-row-reverse' : ''}`}>
-                                <div className="w-full md:w-1/2 aspect-[3/4] md:aspect-[4/5] relative">
+                            <div className={`flex flex-col md:flex-row gap-12 md:gap-20`}>
+                                <div className={`w-full md:w-1/3 aspect-[3/4] md:aspect-[4/5] relative self-start ${isRTL ? 'order-last' : ''}`}>
                                     <div className="absolute top-4 left-4 w-full h-full border border-white/10 z-0"></div>
                                     <img src="./images/me.jpg" alt="Arian Tabib" className="w-full h-full object-cover relative z-10 grayscale hover:grayscale-0 transition-all duration-700" />
                                 </div>
                                 
-                                <div className={`w-full md:w-1/2 ${isRTL ? 'text-right' : 'text-left'}`}>
+                                <div className={`w-full md:w-2/3 ${isRTL ? 'text-right' : 'text-left'}`}>
                                     <h2 className={`text-sm text-accent uppercase tracking-widest mb-4 ${isRTL ? 'font-fa' : ''}`}>{t.about.title}</h2>
                                     <p className={`text-lg md:text-xl text-white/80 leading-loose mb-8 ${isRTL ? 'font-fa' : ''}`}>
                                         {t.about.bio}
                                     </p>
-                                    <div className="flex gap-12 border-t border-white/10 pt-8">
+
+                                    {/* TIMELINE: WORK EXPERIENCE */}
+                                    <div className="mt-16">
+                                        <h3 className={`text-xl font-bold text-white mb-8 border-b border-white/10 pb-2 ${isRTL ? 'font-fa' : ''}`}>{t.about.expTitle}</h3>
+                                        <div className={`space-y-8 relative ${isRTL ? 'border-r mr-2 pr-8' : 'border-l ml-2 pl-8'} border-white/10`}>
+                                            {timeline.experience.map((job, i) => (
+                                                <div key={i} className="relative">
+                                                    <span className={`absolute ${isRTL ? '-right-[37px]' : '-left-[37px]'} top-1.5 w-3 h-3 bg-accent rounded-full border-2 border-black`}></span>
+                                                    <h4 className={`text-lg font-bold text-white ${isRTL ? 'font-fa' : ''}`}>{job.role}</h4>
+                                                    <p className="text-accent text-sm mt-1">{job.company}</p>
+                                                    <span className="text-xs text-secondary uppercase tracking-widest mt-1 block">{job.duration}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    {/* TIMELINE: EDUCATION */}
+                                    <div className="mt-16">
+                                        <h3 className={`text-xl font-bold text-white mb-8 border-b border-white/10 pb-2 ${isRTL ? 'font-fa' : ''}`}>{t.about.eduTitle}</h3>
+                                        <div className={`space-y-8 relative ${isRTL ? 'border-r mr-2 pr-8' : 'border-l ml-2 pl-8'} border-white/10`}>
+                                            {timeline.education.map((edu, i) => (
+                                                <div key={i} className="relative">
+                                                    <span className={`absolute ${isRTL ? '-right-[37px]' : '-left-[37px]'} top-1.5 w-3 h-3 bg-white rounded-full border-2 border-black`}></span>
+                                                    <h4 className={`text-lg font-bold text-white ${isRTL ? 'font-fa' : ''}`}>{edu.role}</h4>
+                                                    <p className="text-accent text-sm mt-1">{edu.company}</p>
+                                                    <span className="text-xs text-secondary uppercase tracking-widest mt-1 block">{edu.duration}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    <div className="flex gap-12 border-t border-white/10 pt-12 mt-12">
                                         <div>
                                             <span className="block text-3xl md:text-4xl font-bold text-white">5+</span>
                                             <span className="text-xs text-secondary uppercase tracking-widest">{t.about.stat1}</span>
@@ -808,10 +874,10 @@
                     {/* --- MODAL --- */}
                     {selectedProject && (
                         <div 
-                            className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8 bg-black/95 backdrop-blur-sm animate-fade-in"
+                            className="fixed inset-0 z-50 flex items-center justify-center p-0 md:p-8 bg-black/95 backdrop-blur-sm animate-fade-in"
                             onClick={handleBackdropClick}
                         >
-                            <div className="relative w-full max-w-6xl max-h-[90vh] overflow-hidden bg-bg border border-white/10 flex flex-col md:flex-row shadow-2xl">
+                            <div className="relative w-full h-full md:max-w-7xl md:h-[90vh] overflow-hidden bg-bg border border-white/10 flex flex-col md:flex-row shadow-2xl">
                                 
                                 <button 
                                     className="absolute top-4 right-4 z-30 text-white hover:text-accent p-2 bg-black/50 rounded-full backdrop-blur-md"
@@ -821,8 +887,8 @@
                                     <Icons.Close />
                                 </button>
 
-                                {/* Media Section */}
-                                <div className="w-full md:w-2/3 h-[50vh] md:h-auto relative bg-black group flex items-center justify-center bg-black">
+                                {/* Media Section (Adaptive) */}
+                                <div className="w-full md:w-3/4 h-1/2 md:h-full relative bg-black group flex items-center justify-center overflow-hidden">
                                     {selectedProject.video && modalImageIndex === selectedProject.gallery.length ? (
                                         <video 
                                             src={selectedProject.video} 
@@ -833,7 +899,7 @@
                                     ) : (
                                         <img 
                                             src={selectedProject.gallery[modalImageIndex]} 
-                                            className="w-full h-full object-contain" 
+                                            className="w-full h-full object-contain transition-opacity duration-300" 
                                             alt="Project Detail" 
                                         />
                                     )}
@@ -873,14 +939,14 @@
                                 </div>
 
                                 {/* Info Section */}
-                                <div className={`w-full md:w-1/3 p-8 md:p-12 flex flex-col justify-center overflow-y-auto ${isRTL ? 'text-right font-fa' : 'text-left'}`} dir={isRTL ? 'rtl' : 'ltr'}>
+                                <div className={`w-full md:w-1/4 p-8 md:p-10 flex flex-col bg-surface border-l border-white/10 overflow-y-auto ${isRTL ? 'text-right font-fa' : 'text-left'}`} dir={isRTL ? 'rtl' : 'ltr'}>
                                     <span className="text-accent text-xs uppercase tracking-widest mb-2">{selectedProject.loc}</span>
-                                    <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">{selectedProject.title[lang]}</h2>
-                                    <p className="text-secondary leading-loose text-sm mb-8">
+                                    <h2 className="text-2xl md:text-3xl font-bold mb-6 text-white">{selectedProject.title[lang]}</h2>
+                                    <p className="text-secondary leading-loose text-sm mb-auto">
                                         {selectedProject.desc[lang]}
                                     </p>
                                     
-                                    <div className="border-t border-white/10 pt-6 grid grid-cols-2 gap-4 text-xs text-white/40 font-mono">
+                                    <div className="border-t border-white/10 pt-6 mt-8 grid grid-cols-1 gap-4 text-xs text-white/40 font-mono">
                                         <div>ROLE: Lead Architect</div>
                                         <div>STATUS: Completed</div>
                                     </div>
