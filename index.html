@@ -252,28 +252,28 @@
                 id: 6, order: 6, 
                 title: { en: "The Signature Suite", fa: "واحد مسکونی مدرن" }, 
                 desc: { en: "An executive residential project in Mahmudabad that masters the challenge of a non-orthogonal, curved floor plan. The interior design embraces the architecture’s fluidity, using custom furniture and organic lines to create a sophisticated, modern coastal retreat. A neutral palette combined with rich textures creates an atmosphere of understated luxury.", fa: "یک پروژه مسکونی اجرایی در محمودآباد که بر چالش یک پلان منحنی و غیرگونیا غلبه می‌کند. طراحی داخلی با استفاده از مبلمان سفارشی و خطوط ارگانیک، سیالیت معماری را در آغوش می‌گیرد تا یک پناهگاه ساحلی مدرن و شیک خلق کند. پالت رنگی خنثی در ترکیب با بافت‌های غنی، فضایی از لوکس بودن بی‌پیرایه را ایجاد می‌کند." },
-                tags: ["interior", "exec"], loc: "Mazandaran, MahmoudAbad", img: "./images/project6-img.jpg", 
+                tags: ["interior", "exec"], loc: "Office", img: "./images/project6-img.jpg", 
                 gallery: generateGallery(6, 12)
             },
             { 
                 id: 7, order: 7, 
                 title: { en: "Modern BedRoom 1", fa: "طراحی اتاق خواب مدرن 1" }, 
                 desc: { en: "Exploration of modern bedroom aesthetics using AI and digital tools.", fa: "کاوش در زیبایی‌شناسی اتاق خواب مدرن با استفاده از هوش مصنوعی و ابزارهای دیجیتال." },
-                tags: ["ai", "interior", "exec"], loc: "Mazandaran, MahmoudAbad", img: "./images/project7-img.jpg", 
+                tags: ["ai", "interior", "exec"], loc: "Virtual", img: "./images/project7-img.jpg", 
                 gallery: generateGallery(7, 5)
             },
             { 
                 id: 8, order: 8, 
                 title: { en: "Modern BedRoom 2", fa: "طراحی اتاق خواب مدرن 2" }, 
                 desc: { en: "A conceptual approach to bedroom design focusing on warmth and minimalism.", fa: "رویکردی مفهومی به طراحی اتاق خواب با تمرکز بر گرما و مینیمالیسم." },
-                tags: ["sketch", "interior", "exec"], loc: "Mazandaran, MahmoudAbad", img: "./images/project8-img.jpg", 
+                tags: ["sketch", "interior", "exec"], loc: "Sketchbook", img: "./images/project8-img.jpg", 
                 gallery: generateGallery(8, 5)
             },
             { 
                 id: 9, order: 9, 
                 title: { en: "Modern BathRoom", fa: "سرویس بهداشتی مدرن" }, 
                 desc: { en: "High-end bathroom design featuring luxury materials and fixtures.", fa: "طراحی سرویس بهداشتی سطح بالا با استفاده از متریال و شیرآلات لوکس." },
-                tags: ["arch", "exec", "interior"], loc: "Mazandaran, MahmoudAbad", img: "./images/project9-img.jpg", 
+                tags: ["arch", "exec", "interior"], loc: "Shiraz", img: "./images/project9-img.jpg", 
                 gallery: generateGallery(9, 5)
             },
             { 
@@ -386,7 +386,7 @@
                 title: { en: "Project 25", fa: "پروژه ۲۵" }, 
                 desc: { en: "Placeholder description for Project 25.", fa: "توضیحات آزمایشی برای پروژه ۲۵." },
                 tags: ["interior"], loc: "Tehran", img: "./images/project25-img.jpg", 
-                gallery: generateGallery(25, 1, false) // Special case based on files
+                gallery: generateGallery(25, 1, false) 
             },
             { 
                 id: 26, order: 26, 
@@ -495,13 +495,14 @@
             },
         ];
 
+        // UPDATED SOCIAL LINKS with specific details
         const socialLinks = [
-            { icon: <Icons.Mail />, label: "Email", href: "mailto:arian.tabib@gmail.com", text: "Email" },
-            { icon: <Icons.Phone />, label: "Mobile", href: "tel:+989392263236", text: "Mobile" },
-            { icon: <Icons.Send />, label: "Telegram", href: "https://t.me/Ariantabib", text: "Telegram" },
-            { icon: <Icons.Instagram />, label: "Instagram", href: "https://instagram.com/Arian_tabib", text: "Instagram" },
-            { icon: <Icons.Youtube />, label: "YouTube", href: "https://youtube.com/@Ariantabib", text: "YouTube" },
-            { icon: <Icons.Linkedin />, label: "LinkedIn", href: "https://linkedin.com/in/arian-tabib", text: "LinkedIn" },
+            { icon: <Icons.Mail />, label: "Email", href: "mailto:arian.tabib@gmail.com", text: "arian.tabib@gmail.com" },
+            { icon: <Icons.Phone />, label: "Mobile", href: "tel:+989392263236", text: "+98 939 226 3236" },
+            { icon: <Icons.Send />, label: "Telegram", href: "https://t.me/ariantabib", text: "@ariantabib" },
+            { icon: <Icons.Instagram />, label: "Instagram", href: "https://instagram.com/Arian_tabib", text: "@Arian_tabib" },
+            { icon: <Icons.Youtube />, label: "YouTube", href: "https://youtube.com/@Ariantabib", text: "@Ariantabib" },
+            { icon: <Icons.Linkedin />, label: "LinkedIn", href: "https://linkedin.com/in/arian-tabib", text: "Arian Tabib" },
         ];
 
         const heroImages = [
@@ -821,7 +822,7 @@
                                 </button>
 
                                 {/* Media Section */}
-                                <div className="w-full md:w-2/3 h-[50vh] md:h-auto relative bg-black group">
+                                <div className="w-full md:w-2/3 h-[50vh] md:h-auto relative bg-black group flex items-center justify-center bg-black">
                                     {selectedProject.video && modalImageIndex === selectedProject.gallery.length ? (
                                         <video 
                                             src={selectedProject.video} 
@@ -832,7 +833,7 @@
                                     ) : (
                                         <img 
                                             src={selectedProject.gallery[modalImageIndex]} 
-                                            className="w-full h-full object-cover transition-opacity duration-300" 
+                                            className="w-full h-full object-contain" 
                                             alt="Project Detail" 
                                         />
                                     )}
@@ -880,8 +881,6 @@
                                     </p>
                                     
                                     <div className="border-t border-white/10 pt-6 grid grid-cols-2 gap-4 text-xs text-white/40 font-mono">
-                                        <div>ORDER: {selectedProject.order}</div>
-                                        <div>TAGS: {selectedProject.tags.join(', ').toUpperCase()}</div>
                                         <div>ROLE: Lead Architect</div>
                                         <div>STATUS: Completed</div>
                                     </div>
